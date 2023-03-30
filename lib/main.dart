@@ -28,12 +28,12 @@ class _MyAppState extends State<MyApp> {
   ];
 
   int _questionIndex = 0;
+
   void _answerQuestion() {
-    if (_questionIndex < questions.length - 1) {
-      setState(() {
-        _questionIndex = _questionIndex + 1;
-      });
-      print(_questionIndex);
+    setState(() {
+      _questionIndex = _questionIndex + 1;
+    });
+    if (_questionIndex < questions.length) {
       print("We have more questions");
     }
   }
@@ -45,14 +45,18 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('My First App'),
         ),
-        body: Column(
-          children: [
-            Question(questions[_questionIndex]["questionText"]),
-            ...(questions[_questionIndex]["answers"] as List<String>)
-                .map((answer) => Answer(_answerQuestion, answer))
-                .toList()
-          ],
-        ),
+        body: _questionIndex < questions.length
+            ? Column(
+                children: [
+                  Question(questions[_questionIndex]["questionText"]),
+                  ...(questions[_questionIndex]["answers"] as List<String>)
+                      .map((answer) => Answer(_answerQuestion, answer))
+                      .toList()
+                ],
+              )
+            : Center(
+                child: Text("You did it"),
+              ),
       ),
     );
   }
